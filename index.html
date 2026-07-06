@@ -69,9 +69,20 @@
   /* ---------- hero ---------- */
   .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;
     padding:0 clamp(20px,5vw,64px);overflow:hidden}
-  .hero-bg{position:absolute;inset:0;z-index:0;
-    background:radial-gradient(120% 90% at var(--mx,50%) var(--my,30%),rgba(255,59,29,.16),transparent 55%);
+  .hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden;background:#0a0a0c}
+  /* Classic "cover" trick for embedded video: force the iframe to always be
+     at least viewport-sized on both axes (based on a 16:9 source), centered,
+     then crop with overflow:hidden on the parent. Works on mobile + desktop. */
+  .yt-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:100vw;height:56.25vw;         /* 16:9 -> height = width * 9/16 */
+    min-height:100vh;min-width:177.78vh; /* 16:9 -> width = height * 16/9 */
+    pointer-events:none;opacity:.55;filter:saturate(1.1) contrast(1.05)}
+  .yt-bg iframe{display:block;width:100%;height:100%;border:0}
+  .hero-bg::before{content:"";position:absolute;inset:0;z-index:1;
+    background:radial-gradient(120% 90% at var(--mx,50%) var(--my,30%),rgba(255,59,29,.28),rgba(10,10,12,.35) 55%,rgba(10,10,12,.75) 100%);
     transition:background .15s}
+  .hero-bg::after{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg,rgba(10,10,12,.15),rgba(10,10,12,.55) 70%,rgba(10,10,12,.92));}
   .hero-grid{position:absolute;inset:0;z-index:0;opacity:.5;
     background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
     background-size:64px 64px;
@@ -368,7 +379,17 @@
   </div>
 </nav>
 <header class="hero" id="top">
-  <div class="hero-bg" id="herobg"></div>
+  <div class="hero-bg" id="herobg">
+    <div class="yt-bg">
+      <!-- Background video: youtu.be/7DB8rW9oZ00 -->
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/7DB8rW9oZ00?autoplay=1&mute=1&loop=1&playlist=7DB8rW9oZ00&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1"
+        title="Background video"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen></iframe>
+    </div>
+  </div>
   <div class="hero-grid"></div>
   <div class="hero-top"><span class="pulse"></span><span>Available for remote work — graphic designer & video editor</span></div>
   <div class="hero-mid">
